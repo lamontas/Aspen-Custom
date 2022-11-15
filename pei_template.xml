@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+    <!-- ============================================================================ -->
+    <!-- TAB: Student Profile -->
+    <!-- ============================================================================ -->
+    <tab name="label.template.iep.tab.Student.Profile">
+      <include context="iep.student.profile.include" />
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.ParentGuardian.Information</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <embedded-list detail-context="student.std.list.con.detail" id="contacts" popup-height="575" popup-width="800" relationship="relIepStdOid.relStdCtjOid" selection-type="none" show-add-button="false" show-delete-button="false" show-detail="false">
+                <system-value field="relCtjCntOid.cntContactType" source="constant" value="Student" />
+                <field id="relCtjCntOid.cntViewName" />
+                <field id="ctjEmergncyPri" sort="true" />
+                <field id="relCtjCntOid.relCntPsnOid.psnPhone01" />
+                <field id="relCtjCntOid.cntViewAdrs" />
+                <field id="relCtjCntOid.relCntPsnOid.relPsnAdrPhys.adrCity" />
+                <field id="relCtjCntOid.relCntPsnOid.psnEmail01" />
+                <field id="ctjLivesWith" />
+                <field alias="all-ctj-LegalGuardian" />
+                <field id="ctjRelateCode" />
+              </embedded-list>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Placement.Information</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row>
+        <column>
+          <property id="relIepStdOid.relStdSklOid.sklSchoolName" read-only="true" />
+          <property id="relIepStdOid.relStdSklOid.relSklStfAdm1.stfNameView" read-only="true" />
+          <property id="relIepStdOid.relStdSklOid.relSklAdrOid.adrPhone01" read-only="true" />
+          <property default-value="LRT/SERT" id="relIepStfOid.stfNameView" prefix-display="show">
+            <picklist extended-dictionary="ON-SPED-IEP" relationship="relIepStfOid" required="true">
+              <field id="stfNameView" sort="true" />
+              <field id="relStfSklOid.sklSchoolName" sort="true" />
+              <filter connector="and" field="stfSpedInd" operator="equals" source="constant" value="true">
+                <filter connector="and" field="stfStatus" operator="equals" source="preference" value="sys.stf.activeCode">
+                  <filter connector="and" field="stfSklOID" operator="equals" source="ancestor" value="relIepStdOid.stdSklOID">
+                    <filter connector="or" field="relStfSfsOid.sfsSklOID" operator="equals" source="session" value="schoolOid">
+                      <filter connector="and" field="relStfSfsOid.sfsCtxOID" operator="equals" source="session" value="currentContextOid" />
+                    </filter>
+                  </filter>
+                </filter>
+              </filter>
+            </picklist>
+          </property>
+          <property default-value="Next LRT/SERT" id="relIepStfOid4.stfNameView" prefix-display="show">
+            <picklist extended-dictionary="ON-SPED-IEP" relationship="relIepStfOid4" required="true">
+              <field id="stfNameView" sort="true" />
+              <field id="relStfSklOid.sklSchoolName" sort="true" />
+              <filter connector="and" field="stfSpedInd" operator="equals" source="constant" value="true">
+                <filter connector="and" field="stfStatus" operator="equals" source="preference" value="sys.stf.activeCode">
+                  <filter connector="and" field="stfSklOID" operator="equals" source="ancestor" value="relIepStdOid.stdSklOID">
+                    <filter connector="or" field="relStfSfsOid.sfsSklOID" operator="equals" source="ancestor" value="relIepStdOid.stdSklOID">
+                      <filter connector="and" field="relStfSfsOid.sfsCtxOID" operator="equals" source="session" value="currentContextOid" />
+                    </filter>
+                    <filter connector="or" field="stfSklOID" operator="equals" source="ancestor" value="relIepStdOid.stdSklOIDNext">
+                      <filter connector="or" field="relStfSfsOid.sfsSklOID" operator="equals" source="ancestor" value="relIepStdOid.stdSklOIDNext">
+                        <filter connector="and" field="relStfSfsOid.sfsCtxOID" operator="equals" source="session" value="currentContextOid" />
+                      </filter>
+                    </filter>
+                  </filter>
+                </filter>
+              </filter>
+            </picklist>
+          </property>
+          <property id="relIepStdOid.stdGradeLevel" read-only="true" />
+        </column>
+        <column>
+          <property alias="iep-reason" />
+          <property alias="iep-iprc-decision" />
+          <property alias="iep-iprc-placement-decision" />
+          <property alias="iep-date-iprc" label="label.template.iep.Initial.IPRC.Date" />
+          <property alias="iep-iprc-last-review-date" />
+          <property alias="iep-iprc-next-review-date" />
+          <property alias="iep-iprc-disp-req-date" />
+          <property alias="iep-iprc-disp-req-resp-date" />
+          <property alias="iep-iprc-disp-req-approved" />
+        </column>
+        <column>
+          <property alias="iep-program" />
+          <property alias="iep-program-location" foreign-id="sklSchoolName" label="label.template.iep.IEP.Program.Location">
+            <picklist required="true">
+              <field id="sklSchoolName" sort="true" />
+            </picklist>
+          </property>
+        </column>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <embedded-list embedded-edit="true" id="studentDisability" read-only="true" relationship="relIepIdbOid">
+                <field id="idbDisability" />
+                <field id="idbPrimaryInd" sort="true" sort-direction="desc" />
+              </embedded-list>
+            </cell>
+          </line>
+        </block>
+      </row>
+    </tab>
+    <tab name="label.template.iep.tab.Assessments">
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Assessment.Data</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <embedded-list detail-context="iepform.assessment" id="iep-assess" popup-height="450" popup-width="450" relationship="relIepIplOid">
+                <system-value field="iplIepOID" source="ancestor" value="iepOID" />
+                <system-value field="iplStdOID" source="ancestor" value="iepStdOID" />
+                <system-value field="iplType" source="constant" value="Assessment" />
+                <field alias="ipl-date" sort="true" />
+                <field alias="ipl-assessment" sort="true" />
+                <field alias="ipl-other-description" />
+                <field alias="ipl-results-summary" sort="true" />
+                <field alias="ipl-agency-provider" sort="true" />
+                <filter connector="and" field="iplType" operator="equals" source="constant" value="Assessment" />
+              </embedded-list>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Students.Strengths.and.Needs</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row>
+        <column>
+          <property alias="iep-iprc-std-strengths" />
+          <property alias="iep-iprc-std-strengths-oth" rows="3" />
+        </column>
+      </row>
+      <row>
+        <column>
+          <property alias="iep-iprc-std-needs" />
+          <property alias="iep-iprc-std-needs-oth" rows="3" />
+        </column>
+      </row>
+    </tab>
+    <tab name="label.template.iep.tab.Courses.Assommodations">
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Populate.Courses.from.Students.Timetable</text>
+            </cell>
+            <cell>
+              <text bold="true" font-size="medium" display="hide">!!ScheduleTerm!!</text>
+              <property alias="iep-program" label="label.template.iep.Select.Schedule.Term" display="false" />
+              <property alias="iep-program-location" label="label.template.iep.Populate.Subjects" display="false" />
+            </cell>
+            <cell>
+              <text><![CDATA[<script language="JavaScript">
+function populateSchedule() {
+    var term = $( "select[id|='scheduleTerm']" ).val();
+    updateDynamicForm("goal-course-populate", term);
+}
+$(function() {
+    updateDynamicForm("updateTemplate"); 
+}); </script>]]></text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <embedded-list action="iepChildDetail.do" custom-jsp="../../sped/iepEmbeddedListOverride.jsp" detail-context="iepform.goal" id="iep-goals" popup-width="1200" relationship="relIepIglOid" show-add-button="false">
+                <system-value field="iglIepOID" source="ancestor" value="iepOID" />
+                <system-value field="iglStdOID" source="ancestor" value="iepStdOID" />
+                <system-value field="iglFocus" source="constant" value="Section" />
+                <field alias="igl-course-desc" sort="true" rows="2" />
+                <field alias="igl-course-term" sort="true" />
+                <field alias="igl-course-num" sort="true" />
+                <field alias="igl-course-staff" />
+                <field alias="igl-course-delivery" />
+                <filter connector="and" field="iglFocus" operator="equals" source="constant" value="Section" />
+              </embedded-list>
+            </cell>
+          </line>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Additional.Subjects.Courses.and.Alternative.Programs.to</text>
+            </cell>
+          </line>
+          <line>
+            <cell>
+              <embedded-list action="iepChildDetail.do" custom-jsp="../../sped/iepEmbeddedListOverride.jsp" detail-context="iepform.goal" id="iep-addl-goals" popup-width="800" relationship="relIepIglOid">
+                <system-value field="iglIepOID" source="ancestor" value="iepOID" />
+                <system-value field="iglStdOID" source="ancestor" value="iepStdOID" />
+                <system-value field="iglFocus" source="constant" value="Additional" />
+                <field alias="igl-course-desc" rows="2" />
+                <field alias="igl-course-num" sort="true" />
+                <field alias="igl-course-staff" />
+                <field alias="igl-course-delivery" />
+                <filter connector="and" field="iglFocus" operator="equals" source="constant" value="Additional" />
+              </embedded-list>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Program.Exemptions.or.School.Compulsory.Course.Substitutions</text>
+            </cell>
+          </line>
+          <line>
+            <cell align="center">
+              <property alias="iep-program-exemptions" label-display="false" rows="7" />
+            </cell>
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Educational.Rationale</text>
+            </cell>
+          </line>
+          <line>
+            <cell align="center">
+              <property alias="iep-educational-rationale" label-display="false" rows="4" />
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Reporting.Format</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row>
+        <column>
+          <property alias="iep-use-provincial-report-ind" label-display="right" />
+          <property alias="iep-use-alt-report-ind" label-display="right" />
+        </column>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.DiplomaCertificate.Type</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+      <block>
+        <line>
+          <spacer height="2"/>
+        </line>
+        <line>
+          <cell>
+            <text bold="true" font-size="medium" source="resource">label.template.iep.Instructional.Accommodations</text>
+          </cell>
+          <cell>
+            <text bold="true" font-size="medium" source="resource">label.template.iep.Environmental.Accommodations</text>
+          </cell>
+          <cell>
+            <text bold="true" font-size="medium" source="resource">label.template.iep.Assessment.Accommodations</text>
+          </cell>
+        </line>
+        <line>
+          <cell vertical-align="top">
+            <embedded-list detail-context="iepform.accommodations" id="iep-accomm-instructional" independent-save="true" popup-height="475" popup-width="700" relationship="relIepIacOid">
+              <system-value field="iacIepOID" source="ancestor" value="iepOID"/>
+              <system-value field="iacStdOID" source="ancestor" value="iepStdOID"/>
+              <system-value field="iacCategory" source="constant" value="Instructional"/>
+              <field id="iacName"/>
+              <filter field="iacCategory" operator="equals" source="constant" value="Instructional"/>
+            </embedded-list>
+          </cell>
+          <cell vertical-align="top">
+            <embedded-list detail-context="iepform.accommodations" id="iep-accomm-environmental" independent-save="true" popup-height="475" popup-width="700" relationship="relIepIacOid">
+              <system-value field="iacIepOID" source="ancestor" value="iepOID"/>
+              <system-value field="iacStdOID" source="ancestor" value="iepStdOID"/>
+              <system-value field="iacCategory" source="constant" value="Environmental"/>
+              <field id="iacName"/>
+              <filter field="iacCategory" operator="equals" source="constant" value="Environmental"/>
+            </embedded-list>
+          </cell>
+          <cell vertical-align="top">
+            <embedded-list detail-context="iepform.accommodations" id="iep-accomm-assessment" independent-save="true" popup-height="475" popup-width="700" relationship="relIepIacOid">
+              <system-value field="iacIepOID" source="ancestor" value="iepOID"/>
+              <system-value field="iacStdOID" source="ancestor" value="iepStdOID"/>
+              <system-value field="iacCategory" source="constant" value="Assessment"/>
+              <field id="iacName"/>
+              <filter field="iacCategory" operator="equals" source="constant" value="Assessment"/>
+            </embedded-list>
+          </cell>
+        </line>
+      </block>
+    </row>
+     
+      <row show-border="false">
+        <block>
+          <line border="none">
+            <spacer height="2" />
+          </line>
+          <line border="none">
+            <cell border="none" cell-span="1" line-span="1">
+              <text bold="true" font-size="medium">label.template.iep.Individualized.Equipment</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line border="none">
+            <cell border="none" cell-span="1" line-span="1">
+              <embedded-list embedded-edit="true" extended-dictionary-oid="ddxOnInventory" id="iep-inventory" relationship="relIepStdOid.relStdUdbOid" show-add-button="false" show-delete-button="false">
+                <field alias="udb-spedinv-transaction-date" read-only="true" />
+                <field alias="relUdbUdcOid.relUdcUdaOid.uda-spedinv-category" read-only="true" />
+                <field alias="relUdbUdcOid.relUdcUdaOid.uda-spedinv-description" read-only="true" />
+                <field alias="udb-spedinv-hide" edit="true" />
+                <filter alias="udb-spedinv-return-date" connector="and" operator="empty" />
+              </embedded-list>
+            </cell>
+          </line>
+          <line border="none">
+            <cell border="none" cell-span="1" line-span="1">
+              <text bold="true" font-size="medium">label.template.iep.Additional.Individualized.Equipment</text>
+            </cell>
+          </line>
+          <line border="none">
+            <cell align="center">
+              <property alias="iep-indiv-equip-addl" label-display="false" rows="6" />
+            </cell>
+          </line>
+        </block>
+      </row>
+    </tab>
+    <tab name="label.template.iep.tab.Provincial.Assessment">
+      <row>
+        <block>
+          <line>
+            <cell vertical-align="top">
+              <embedded-list detail-context="iepform.provincial.assessment" id="provincial-assessment" popup-height="475" popup-width="700" relationship="relIepIpaOid">
+                <system-value field="ipaIepOID" source="ancestor" value="iepOID" />
+                <system-value field="ipaStatus" source="constant" value="1" />
+                <system-value field="ipaStartDate" source="default" value="today" />
+                <field alias="ipa-assessment-name" />
+                <field alias="ipa-participation-accomm" />
+                <filter field="ipaStatus" operator="equals" source="constant" value="1" />
+              </embedded-list>
+            </cell>
+          </line>
+        </block>
+      </row>
+    </tab>
+    <tab name="label.template.iep.tab.Transition">
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <embedded-list action="iepChildDetail.do" custom-jsp="../../sped/iepEmbeddedListOverride.jsp" detail-context="iepform.goal.transition" id="iep-transition-goals" popup-width="800" relationship="relIepIglOid">
+                <system-value field="iglIepOID" source="ancestor" value="iepOID" />
+                <system-value field="iglStdOID" source="ancestor" value="iepStdOID" />
+                <system-value field="iglFocus" source="constant" value="Transition" />
+                <field alias="igl-transition-type" sort="true" />
+                <field id="iglGoal" sort="true" label="label.template.iepform.Transition.Goal" />
+                <filter connector="and" field="iglFocus" operator="equals" source="constant" value="Transition" />
+              </embedded-list>
+            </cell>
+          </line>
+        </block>
+      </row>
+    </tab>
+    <tab name="label.template.iep.tab.Human.Resources">
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Human.Resources.teachingnonteaching</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <embedded-list detail-context="iepform.service" id="iep-services" relationship="relIepIsvOid">
+                <system-value field="isvIepOID" source="ancestor" value="iepOID" />
+                <system-value field="isvStdOID" source="ancestor" value="iepStdOID" />
+                <field id="isvServiceType" label="label.template.iep.Service.Type" sort="true" />
+                <field id="isvProvider" label="label.template.iep.Service.Personnel.Type" />
+                <field id="isvStartDate" sort="true" />
+                <field alias="isv-frequency" />
+                <field alias="isv-frequency-other" />
+                <field id="isvSettingCode" />
+              </embedded-list>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Medical.Conditions</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <column>
+          <property alias="iep-medical-conditions" label="label.template.iep.Medical.Conditions" />
+          <property alias="iep-medical-conditions-oth" label="label.template.iep.Other.Medical.Conditions" rows="3" />
+        </column>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.HealthPersonal.Support</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row>
+        <column>
+          <property alias="iep-health-support-needed" />
+        </column>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Health.Supports.Needed</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <column>
+          <property alias="iep-health-support" label="label.template.iep.Health.Supports" />
+          <property alias="iep-health-support-oth" label="label.template.iep.Other.Health.Supports" rows="3" />
+        </column>
+      </row>
+    </tab>
+    <tab name="label.template.iep.tab.IEP.Team">
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.IEP.Development.Team</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <embedded-list action="iepChildDetail.do" custom-jsp="../../sped/iepEmbeddedListOverride.jsp" detail-context="iepform.team" id="iep-team" popup-width="800" relationship="relIepItmOid">
+                <system-value field="itmIepOID" source="ancestor" value="iepOID" />
+                <system-value field="itmStdOID" source="ancestor" value="iepStdOID" />
+                <field id="relItmPsnOid.psnNameLast" />
+                <field id="relItmPsnOid.psnNameFirst" />
+                <field id="itmMemberRole" />
+              </embedded-list>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Sources.Consulted.in.the.Development.of.the</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <property alias="iep-sources-consulted" label-display="hide" />
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <text>label.template.iep.Other.Sources</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <property alias="iep-other-sources" label-display="hide" />
+            </cell>
+          </line>
+        </block>
+      </row>
+    </tab>
+    <tab name="label.template.iep.tab.Consultation">
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Log.of.ParentStudent.Consultation.and.Staff.ReviewUpdating</text>
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <cell>
+              <embedded-list detail-context="iepform.journal" id="stdJournal" relationship="relIepStdOid.relStdJnlOid">
+                <system-value field="jnlStdOID" source="ancestor" value="iepStdOID" />
+                <system-value field="jnlUsrOID" source="session" value="userOid" />
+                <system-value field="jnlTime" source="constant" value="12:00 AM" />
+                <system-value alias="all-jnl-SpecialEdIndicator" source="constant" value="true" />
+                <field id="jnlDate" />
+                <field alias="jnl-initiated-by" />
+                <field id="jnlType" />
+                <field id="jnlReasonCode" />
+                <field alias="all-jnl-ActivityDescription" />
+                <field id="jnlComments" />
+                <filter alias="all-jnl-SpecialEdIndicator" connector="and" operator="equals" source="constant" value="true" />
+              </embedded-list>
+            </cell>
+          </line>
+        </block>
+      </row>
+    </tab>
+    <tab name="label.template.iep.tab.Response">
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell cell-span="10">
+              <text bold="true" font-size="medium">label.template.iep.Involvement.of.ParentGuardian.and.Student.if.student</text>
+            </cell>
+          </line>
+          <line>
+            <cell cell-span="4">
+              <text font-size="medium">label.template.iep.I.was.consulted.in.the.development.of</text>
+            </cell>
+            <cell align="right">
+              <property alias="iep-parent-consulted" label-display="hide" />
+            </cell>
+            <cell align="left" cell-span="2">
+              <text>label.template.iep.Parent.Guardian</text>
+            </cell>
+            <cell align="right">
+              <property alias="iep-student-consulted" label-display="hide" />
+            </cell>
+            <cell align="left">
+              <text>label.template.iep.Student</text>
+            </cell>
+            <cell cell-span="5">
+              <text font-size="medium" />
+            </cell>
+          </line>
+          <line>
+            <cell cell-span="4">
+              <text font-size="medium">label.template.iep.I.declined.the.opportunity.to.be.consulted</text>
+            </cell>
+            <cell align="right">
+              <property alias="iep-parent-declined" label-display="hide" />
+            </cell>
+            <cell align="left" cell-span="2">
+              <text>label.template.iep.Parent.Guardian</text>
+            </cell>
+            <cell align="right">
+              <property alias="iep-student-declined" label-display="hide" />
+            </cell>
+            <cell align="left">
+              <text>label.template.iep.Student</text>
+            </cell>
+            <cell cell-span="5">
+              <text font-size="medium" />
+            </cell>
+          </line>
+          <line>
+            <cell cell-span="4">
+              <text font-size="medium">label.template.iep.I.have.received.a.copy.of.this</text>
+            </cell>
+            <cell align="right">
+              <property alias="iep-parent-received-copy" label-display="hide" />
+            </cell>
+            <cell align="left" cell-span="2">
+              <text>label.template.iep.Parent.Guardian</text>
+            </cell>
+            <cell align="right">
+              <property alias="iep-student-received-copy" label-display="hide" />
+            </cell>
+            <cell align="left">
+              <text>label.template.iep.Student</text>
+            </cell>
+            <cell cell-span="5">
+              <text font-size="medium" />
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.ParentGuardian.Comments</text>
+            </cell>
+          </line>
+          <line>
+            <cell align="center">
+              <property alias="iep-parent-comment" label-display="false" rows="7" />
+            </cell>
+          </line>
+        </block>
+      </row>
+      <row show-border="false">
+        <block>
+          <line>
+            <spacer height="2" />
+          </line>
+          <line>
+            <cell>
+              <text bold="true" font-size="medium">label.template.iep.Student.Comments</text>
+            </cell>
+          </line>
+          <line>
+            <cell align="center">
+              <property alias="iep-student-comment" label-display="false" rows="7" />
+            </cell>
+          </line>
+        </block>
+      </row>
+    </tab>
+  </template>
